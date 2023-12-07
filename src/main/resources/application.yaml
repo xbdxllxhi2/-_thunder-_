@@ -1,0 +1,51 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://152.228.216.8:5432/thunder?createDatabaseIfNotExists=true&serverTimezone=UTC
+    username: thunder
+    password : thunder
+    driver-class-name : org.postgresql.Driver
+    thymeleaf:
+      cache: false
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+# Spring Security Configuration
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: your-client-id
+            client-secret: your-client-secret
+            redirect-uri: 152.228.216.8:5233/login/oauth2/code/{registrationId}
+        provider:
+          keycloak:
+            issuer-uri: http://102.156.201.228:5233/realms/your-realm-name
+
+# Keycloak Configuration
+keycloak:
+  auth-server-url: http://102.156.201.228:5233/auth
+  realm: your-realm-name
+  resource: your-client-id
+  public-client: true
+  security-constraints:
+    - authRoles:
+        - your-required-role
+      securityCollections:
+        - patterns:
+            - /api/**  # Adjust this URL pattern based on your API endpoint structure
+
+# Server Configuration
+server:
+  port: 8081  # Adjust the port number if needed
+
+
+# Logging Configuration (Optional)
+logging:
+  level:
+    org.springframework.security: DEBUG
+
